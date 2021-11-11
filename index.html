@@ -36,7 +36,8 @@
                             maxlength="255">
                 </label>
                 <label for="user-phone">Phone number<abbr title="required" aria-label="required">*</abbr> : 
-                    <input type="tel" id="user-phone" name="user-phone" placeholder="+380 (XX) XXX-XX-XX" required>
+                    <input type="tel" id="user-phone" name="user-phone" placeholder="+38-0XX-XXX-XXXX" required 
+                            pattern="^\+38-\d{3}-\d{3}-\d{4}">
                 </label>
                 <label for="user-birthdate">Bithdate<abbr title="required" aria-label="required">*</abbr> : 
                     <input type="date" id="user-birthdate" name="user-birthdate" placeholder="DD.MM.YYYY" required>
