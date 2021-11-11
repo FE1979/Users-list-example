@@ -22,20 +22,21 @@
         <form id="user-form" action="" method="">
             <fieldset>
                 <legend>Add or update user info</legend>
-                <label for="user-first-name">
-                    <input type="text" id="user-first-name" name="user-first-name" placeholder="First name">
+                <p>Required fields are followed with <abbr title="required">*</abbr></p>
+                <label for="user-first-name">First Name<abbr title="required" aria-label="required">*</abbr> :
+                    <input type="text" id="user-first-name" name="user-first-name" placeholder="First name" required>
                 </label>
-                <label for="user-last-name">
-                    <input type="text" id="user-last-name" name="user-last-name" placeholder="Last name">
+                <label for="user-last-name">Last Name<abbr title="required" aria-label="required">*</abbr> : 
+                    <input type="text" id="user-last-name" name="user-last-name" placeholder="Last name" required>
                 </label>
-                <label for="user-email">
-                    <input type="email" id="user-email" name="user-email" placeholder="example@gmail.com">
+                <label for="user-email">E-mail<abbr title="required" aria-label="required">*</abbr> : 
+                    <input type="email" id="user-email" name="user-email" placeholder="example@gmail.com" required>
                 </label>
-                <label for="user-phone">
-                    <input type="tel" id="user-phone" name="user-phone" placeholder="+380 (XX) XXX-XX-XX">
+                <label for="user-phone">Phone number<abbr title="required" aria-label="required">*</abbr> : 
+                    <input type="tel" id="user-phone" name="user-phone" placeholder="+380 (XX) XXX-XX-XX" required>
                 </label>
-                <label for="user-birthdate">
-                    <input type="datetime-local" id="user-birthdate" name="user-birthdate" placeholder="DD.MM.YYYY">
+                <label for="user-birthdate">Bithdate<abbr title="required" aria-label="required">*</abbr> : 
+                    <input type="date" id="user-birthdate" name="user-birthdate" placeholder="DD.MM.YYYY" required>
                 </label>
                 <label for="user-pic">Upload user picture
                     <input type="file" id="user-pic" name="user-pic" accept="image/*">
