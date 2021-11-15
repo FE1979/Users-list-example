@@ -36,7 +36,7 @@ setMinMaxBirthdate();
 
 function setMinMaxBirthdate() {
     const today = new Date();
-    const [currentYear, currentMonth, currentDay] = [today.getFullYear(), today.getMonth(), today.getDate()];
+    const [currentYear, currentMonth, currentDay] = [today.getFullYear(), today.getMonth()+1, today.getDate()];
     const birthdateInput = document.getElementById("user-birthdate");
 
     const month = currentMonth < 10 && '0'+currentMonth || ''+currentMonth;
