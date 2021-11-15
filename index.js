@@ -1,18 +1,16 @@
-import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set, push, child } from 'firebase/database';
+self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 
-const firebaseConfig = {
-    apiKey: "AIzaSyD5LkOnzYbIGtNVJysjad4FE-P8vuEBdTo",
-    authDomain: "my-projects-1f367.firebaseapp.com",
-    projectId: "my-projects-1f367",
-    databaseURL: "https://my-projects-1f367-default-rtdb.europe-west1.firebasedatabase.app",
-    storageBucket: "my-projects-1f367.appspot.com",
-    messagingSenderId: "543781647796",
-    appId: "1:543781647796:web:ea69f05e1676bd9b3b2ee1",
-    measurementId: "G-MKBGXRG65K"
-  };
+import { initializeApp } from 'firebase/app';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+import { getDatabase, ref, set, push, child } from 'firebase/database';
+import { firebaseConfig,DEBUG_TOKEN } from './firebase_config.js';
 
 const app = initializeApp(firebaseConfig);
+const appCheck = initializeAppCheck(app, {
+    provider: new ReCaptchaV3Provider(DEBUG_TOKEN),
+    isTokenAutoRefreshEnabled: false
+});
+
 const database = getDatabase(app);
 
 const form = document.getElementById("user-form");
