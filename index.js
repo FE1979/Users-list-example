@@ -2,7 +2,7 @@ self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 
 import { initializeApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
-import { getDatabase, ref, set, push, child } from 'firebase/database';
+import { getDatabase, ref, set, get, push, child } from 'firebase/database';
 import { firebaseConfig,DEBUG_TOKEN } from './firebase_config.js';
 
 const app = initializeApp(firebaseConfig);
@@ -32,7 +32,7 @@ form.addEventListener('submit', (e) => {
 });
 
 function writeUserData(userID, obj) {
-    set(ref(database, 'users' + userID), obj)
+    set(ref(database, 'users/' + userID), obj)
         .then(() => (alert('Data transfered succssfully')))
         .catch((err) => (alert('Something went wrong!')));
 }
