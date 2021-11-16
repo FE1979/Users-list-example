@@ -12,24 +12,25 @@ const appCheck = initializeAppCheck(app, {
 });
 
 const database = getDatabase(app);
-
 const form = document.getElementById("user-form");
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
+    const newUserId = push(child(ref(database), 'users')).key;
     const formData = new FormData(form);
     const userData = {}
 
     for (let [key, value] of formData.entries()) {
         userData[key] = value
     }
-    const newUserId = push(child(ref(database), 'users')).key;
 
     writeUserData(newUserId, userData);
 });
 
-function writeUserData (userID, obj) {
-    set(ref(database, 'users' + userID), obj);
+function writeUserData(userID, obj) {
+    set(ref(database, 'users' + userID), obj)
+        .then(() => (alert('Data transfered succssfully')))
+        .catch((err) => (alert('Something went wrong!')));
 }
 
 setMinMaxBirthdate();
