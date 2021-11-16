@@ -11,6 +11,10 @@ const appCheck = initializeAppCheck(app, {
     isTokenAutoRefreshEnabled: false
 });
 
+window.addEventListener('DOMContentLoaded', () => {
+    setMinMaxBirthdate();
+})
+
 const database = getDatabase(app);
 const form = document.getElementById("user-form");
 
@@ -32,8 +36,6 @@ function writeUserData(userID, obj) {
         .then(() => (alert('Data transfered succssfully')))
         .catch((err) => (alert('Something went wrong!')));
 }
-
-setMinMaxBirthdate();
 
 function setMinMaxBirthdate() {
     const today = new Date();
