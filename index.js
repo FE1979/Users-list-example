@@ -1,5 +1,6 @@
 self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 
+import { async } from '@firebase/util';
 import { initializeApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { getDatabase, ref, set, get, push, child } from 'firebase/database';
@@ -48,3 +49,37 @@ function setMinMaxBirthdate() {
     birthdateInput.setAttribute("max", `${currentYear}-${month}-${day}`);
     birthdateInput.setAttribute("min", `${currentYear-120}-${month}-${day}`);
 }
+
+async function getUserList() {
+    return get(ref(database))
+        .then((usersList) => {
+            if (usersList.exists()) {
+                return usersList;
+            } else {
+                return;
+            }
+        }).catch((err) => {
+            console.error(err)
+        })
+}
+
+async function migrateUsers() {
+    const data = await getUserList();
+    
+    if (data) {
+        data.forEach((item) => {
+            let user = item.exportVal(); // get JS object
+
+            if (user["-MocbBsON2imUcnMihGR"]) {
+                return; // do nothing if true item
+            } else {
+                let newUserId = push(child(ref(database), 'users/')).key; // get new ID
+                writeUserData(newUserId, user) // write item to new place
+            }
+
+            set(ref(database, item.key), null); // clear item from previous place
+        })
+    }
+};
+
+(async () => {await migrateUsers()})();
