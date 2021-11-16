@@ -14,6 +14,7 @@ const appCheck = initializeAppCheck(app, {
 
 window.addEventListener('DOMContentLoaded', () => {
     setMinMaxBirthdate();
+    showUsersList();
 })
 
 const database = getDatabase(app);
@@ -51,7 +52,7 @@ function setMinMaxBirthdate() {
 }
 
 async function getUserList() {
-    return get(ref(database))
+    return get(ref(database, 'users/'))
         .then((usersList) => {
             if (usersList.exists()) {
                 return usersList;
@@ -63,6 +64,7 @@ async function getUserList() {
         })
 }
 
+/* remove before merge into develop */
 async function migrateUsers() {
     const data = await getUserList();
     
@@ -82,4 +84,30 @@ async function migrateUsers() {
     }
 };
 
-(async () => {await migrateUsers()})();
+async function showUsersList() {
+    const usersList = await getUserList();
+    const list = document.getElementById("users-list");
+
+    console.log(usersList.key, usersList.exportVal())
+
+    usersList.forEach((item) => {
+        console.log('next Item')
+        console.log(item.key, item.exportVal());
+    })
+
+    usersList.forEach((item) => {
+        let userData = item.exportVal();
+        let listItem = document.createElement("li");
+        let deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+
+        listItem.textContent = `${userData.firstName}, 
+                                ${userData.lastName}, 
+                                ${userData.birthDate}, 
+                                ${userData.email},
+                                ${userData.phoneNumber}`;
+        listItem.id = item.key;
+        listItem.appendChild(deleteBtn);
+        list.appendChild(listItem);
+    })
+}
