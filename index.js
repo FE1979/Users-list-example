@@ -12,9 +12,9 @@ const appCheck = initializeAppCheck(app, {
     isTokenAutoRefreshEnabled: false
 });
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
     setMinMaxBirthdate();
-    showUsersList();
+    await showUsersList();
 })
 
 const database = getDatabase(app);
@@ -88,18 +88,14 @@ async function showUsersList() {
     const usersList = await getUserList();
     const list = document.getElementById("users-list");
 
-    console.log(usersList.key, usersList.exportVal())
-
-    usersList.forEach((item) => {
-        console.log('next Item')
-        console.log(item.key, item.exportVal());
-    })
-
     usersList.forEach((item) => {
         let userData = item.exportVal();
         let listItem = document.createElement("li");
         let deleteBtn = document.createElement('button');
+
         deleteBtn.textContent = 'Delete';
+        deleteBtn.id = item.key;
+        deleteBtn.addEventListener('click', deleteUser)
 
         listItem.textContent = `${userData.firstName}, 
                                 ${userData.lastName}, 
@@ -107,7 +103,20 @@ async function showUsersList() {
                                 ${userData.email},
                                 ${userData.phoneNumber}`;
         listItem.id = item.key;
+
+        listItem.addEventListener('click', updateUser)
+
         listItem.appendChild(deleteBtn);
         list.appendChild(listItem);
     })
+}
+
+function deleteUser(event) {
+    const userID = event.target.id;
+    set(ref(database, 'users/' + userID), null)
+    console.log(userID, 'deleted')
+}
+
+function updateUser(event) {
+
 }
