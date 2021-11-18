@@ -3,7 +3,7 @@ self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 import { initializeApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { getDatabase, onValue, ref, set, get, update, push, child } from 'firebase/database';
-import { getStorage, uploadBytes, getDownloadURL, ref as storageRef } from 'firebase/storage';
+import { getStorage, uploadBytes, getDownloadURL, deleteObject, listAll, ref as storageRef } from 'firebase/storage';
 import { firebaseConfig,DEBUG_TOKEN } from './firebase_config.js';
 
 const app = initializeApp(firebaseConfig);
@@ -126,9 +126,7 @@ async function showUsersList(snapshot) {
             getDownloadURL(userPicRef)
                 .then((url) => userPic.src = url)
                 .then(() => { listItem.appendChild(userPic) });
-            
         }
-        
 
         deleteBtn.textContent = 'Delete';
         deleteBtn.id = item.key;
@@ -151,8 +149,15 @@ async function showUsersList(snapshot) {
 
 function deleteUser(event) {
     const userID = event.target.id;
-    set(ref(database, 'users/' + userID), null)
-    console.log(userID, 'deleted')
+    const userPicRef = storageRef(storage, `userPics/${ userID }`);
+    set(ref(database, 'users/' + userID), null);
+
+    listAll(userPicRef)
+        .then((files) => {
+            files.items.forEach((file) => {
+                deleteObject(file);
+            })
+        })
 }
 
 onValue(ref(database, 'users/'), (snapshot) => {
