@@ -3,7 +3,7 @@ self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 import { initializeApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { getDatabase, onValue, ref, set, get, update, push, child } from 'firebase/database';
-import { getStorage, uploadBytes, put, ref as storageRef } from 'firebase/storage';
+import { getStorage, uploadBytes, getDownloadURL, ref as storageRef } from 'firebase/storage';
 import { firebaseConfig,DEBUG_TOKEN } from './firebase_config.js';
 
 const app = initializeApp(firebaseConfig);
@@ -119,6 +119,16 @@ async function showUsersList(snapshot) {
         let userData = item.exportVal();
         let listItem = document.createElement("li");
         let deleteBtn = document.createElement('button');
+
+        if (userData['userPic']) {
+            let userPic = document.createElement('img');
+            const userPicRef = storageRef(storage, userData['userPic']);
+            getDownloadURL(userPicRef)
+                .then((url) => userPic.src = url)
+                .then(() => { listItem.appendChild(userPic) });
+            
+        }
+        
 
         deleteBtn.textContent = 'Delete';
         deleteBtn.id = item.key;
