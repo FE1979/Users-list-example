@@ -3,6 +3,7 @@ self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 import { initializeApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { getDatabase, onValue, ref, set, get, update, push, child } from 'firebase/database';
+import { getStorage, uploadBytes, put, ref as storageRef } from 'firebase/storage';
 import { firebaseConfig,DEBUG_TOKEN } from './firebase_config.js';
 
 const app = initializeApp(firebaseConfig);
@@ -16,6 +17,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 })
 
 const database = getDatabase(app);
+const storage = getStorage(app);
 const form = document.getElementById("user-form");
 const updateBtn = document.getElementById("update-btn");
 
@@ -41,6 +43,14 @@ form.addEventListener('submit', (e) => {
         userData[key] = value
     }
 
+    const userPic = formData.get("userPic");
+    if (userPic) {
+        const userPicRef = storageRef(storage, `userPics/${ newUserId }/` + userPic.name);
+        userData['userPic'] = userPicRef.fullPath;
+        uploadBytes(userPicRef, userPic);
+    }
+    
+    console.log(userData);
     writeUserData(newUserId, userData);
 });
 
