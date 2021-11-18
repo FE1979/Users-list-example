@@ -72,40 +72,6 @@ function setMinMaxBirthdate() {
     birthdateInput.setAttribute("min", `${currentYear-120}-${month}-${day}`);
 }
 
-/* remove before merge into develop */
-async function getUserList() {
-    return get(ref(database, 'users/'))
-        .then((usersList) => {
-            if (usersList.exists()) {
-                return usersList;
-            } else {
-                return;
-            }
-        }).catch((err) => {
-            console.error(err)
-        })
-}
-
-/* remove before merge into develop */
-async function migrateUsers() {
-    const data = await getUserList();
-    
-    if (data) {
-        data.forEach((item) => {
-            let user = item.exportVal(); // get JS object
-
-            if (user["-MocbBsON2imUcnMihGR"]) {
-                return; // do nothing if true item
-            } else {
-                let newUserId = push(child(ref(database), 'users/')).key; // get new ID
-                writeUserData(newUserId, user) // write item to new place
-            }
-
-            set(ref(database, item.key), null); // clear item from previous place
-        })
-    }
-};
-
 async function showUsersList(snapshot) {
     const usersList = snapshot;
     const list = document.getElementById("users-list");
