@@ -1,6 +1,5 @@
 self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 
-import { async } from '@firebase/util';
 import { initializeApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { getDatabase, onValue, ref, set, get, update, push, child } from 'firebase/database';
@@ -14,7 +13,6 @@ const appCheck = initializeAppCheck(app, {
 
 window.addEventListener('DOMContentLoaded', async () => {
     setMinMaxBirthdate();
-    await showUsersList();
 })
 
 const database = getDatabase(app);
