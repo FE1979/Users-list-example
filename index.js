@@ -3,7 +3,7 @@ self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 import { async } from '@firebase/util';
 import { initializeApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
-import { getDatabase, ref, set, get, push, child } from 'firebase/database';
+import { getDatabase, onValue, ref, set, get, push, child } from 'firebase/database';
 import { firebaseConfig,DEBUG_TOKEN } from './firebase_config.js';
 
 const app = initializeApp(firebaseConfig);
@@ -51,6 +51,7 @@ function setMinMaxBirthdate() {
     birthdateInput.setAttribute("min", `${currentYear-120}-${month}-${day}`);
 }
 
+/* remove before merge into develop */
 async function getUserList() {
     return get(ref(database, 'users/'))
         .then((usersList) => {
@@ -84,9 +85,14 @@ async function migrateUsers() {
     }
 };
 
-async function showUsersList() {
-    const usersList = await getUserList();
+async function showUsersList(snapshot) {
+    const usersList = snapshot;
     const list = document.getElementById("users-list");
+
+    let listItems = document.querySelectorAll(".user-item");
+    listItems.forEach((item) => {
+        list.removeChild(item);
+    })
 
     usersList.forEach((item) => {
         let userData = item.exportVal();
@@ -103,8 +109,9 @@ async function showUsersList() {
                                 ${userData.email},
                                 ${userData.phoneNumber}`;
         listItem.id = item.key;
+        listItem.className = "user-item"
 
-        listItem.addEventListener('click', updateUser)
+        listItem.addEventListener('click', getUser)
 
         listItem.appendChild(deleteBtn);
         list.appendChild(listItem);
@@ -117,6 +124,22 @@ function deleteUser(event) {
     console.log(userID, 'deleted')
 }
 
-function updateUser(event) {
+onValue(ref(database, 'users/'), (snapshot) => {
+    showUsersList(snapshot);
+})
 
+function getUser(event) {
+    const userID = event.target.id;
+    const userRef = ref(database, `users/${ userID }`);
+    form.setAttribute("userID", userID);
+
+    get(userRef).then((userData) => {
+        const userObj = userData.exportVal()
+        const inputs = form.querySelectorAll("input");
+
+        for (let input of inputs) {
+            let key = input.getAttribute("name");
+            input.value = userObj[key];
+        }
+    })
 }
