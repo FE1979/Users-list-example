@@ -3,7 +3,7 @@ self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 import { async } from '@firebase/util';
 import { initializeApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
-import { getDatabase, onValue, ref, set, get, push, child } from 'firebase/database';
+import { getDatabase, onValue, ref, set, get, update, push, child } from 'firebase/database';
 import { firebaseConfig,DEBUG_TOKEN } from './firebase_config.js';
 
 const app = initializeApp(firebaseConfig);
@@ -19,6 +19,19 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 const database = getDatabase(app);
 const form = document.getElementById("user-form");
+const updateBtn = document.getElementById("update-btn");
+
+updateBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const userID = form.getAttribute("userID");
+    const formData = new FormData(form);
+    const userData = {}
+
+    for (let [key, value] of formData.entries()) {
+        userData[key] = value
+    }
+    update(ref(database, `users/${ userID }`), userData);
+});
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
