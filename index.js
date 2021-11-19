@@ -142,16 +142,27 @@ function getFormData() {
 
 function getListItemData(event) {
     const userID = event.target.id;
-    const userRef = ref(database, `users/${ userID }`);
     form.setAttribute("userID", userID);
+    const clickedElem = event.target;
+    let spans;
 
-    get(userRef).then((userData) => {
-        const userObj = userData.exportVal()
-        const inputs = form.querySelectorAll("input");
+    if (clickedElem.className == "user-item") {
+        spans = clickedElem.querySelectorAll("span");
+    } else {
+        spans = clickedElem.parentNode.querySelectorAll("span")
+    }
 
-        for (let input of inputs) {
-            let key = input.getAttribute("name");
-            input.value = userObj[key];
-        }
+    const itemData = {};
+    spans.forEach((span) => {
+        itemData[span.getAttribute("name")] = span.textContent;
+        console.log(span.getAttribute("name"));
+        console.log(span.textContent)
+    })
+
+    const inputs = form.querySelectorAll('input');
+
+    inputs.forEach((input) => {
+        let key = input.getAttribute("name");
+        input.value = itemData[key]
     })
 }
