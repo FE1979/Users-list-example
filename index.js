@@ -70,7 +70,7 @@ function renderList(usersList) {
         listItem.id = item.key;
         listItem.className = "user-item"
 
-        listItem.addEventListener('click', getUser)
+        listItem.addEventListener('click', getListItemData)
 
         listItem.appendChild(deleteBtn);
         list.appendChild(listItem);
@@ -131,7 +131,7 @@ function getFormData() {
     return userData;
 }
 
-function getUser(event) {
+function getListItemData(event) {
     const userID = event.target.id;
     const userRef = ref(database, `users/${ userID }`);
     form.setAttribute("userID", userID);
