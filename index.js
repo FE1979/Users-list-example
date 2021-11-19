@@ -7,7 +7,7 @@ import { getStorage, uploadBytes, getDownloadURL, deleteObject, listAll, ref as 
 import { firebaseConfig,DEBUG_TOKEN } from './firebase_config.js';
 
 const app = initializeApp(firebaseConfig);
-const appCheck = initializeAppCheck(app, {
+initializeAppCheck(app, {
     provider: new ReCaptchaV3Provider(DEBUG_TOKEN),
     isTokenAutoRefreshEnabled: false
 });
