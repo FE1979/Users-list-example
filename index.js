@@ -81,12 +81,6 @@ updateBtn.addEventListener('click', updateUser);
 
 form.addEventListener('submit', createUser);
 
-function writeUserData(userID, obj) {
-    set(ref(database, 'users/' + userID), obj)
-        .then(() => (alert('Data transfered succssfully')))
-        .catch((err) => (alert('Something went wrong!')));
-}
-
 async function createUser(e) {
     e.preventDefault();
     const newUserId = push(child(ref(database), 'users')).key;
@@ -98,8 +92,10 @@ async function createUser(e) {
         userData['userPic'] = userPicRef.fullPath;
         await uploadBytes(userPicRef, userPic);
     }
-    
-    writeUserData(newUserId, userData);
+
+    set(ref(database, 'users/' + newUserId), userData)
+        .then(() => (console.log('New user created')))
+        .catch((err) => (console.error(err)));
 }
 
 function updateUser(e) {
