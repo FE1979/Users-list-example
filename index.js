@@ -17,7 +17,7 @@ const storage = getStorage(app);
 const form = document.getElementById("user-form");
 const updateBtn = document.getElementById("update-btn");
 
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener('DOMContentLoaded', () => {
     setMinMaxBirthdate();
 })
 
@@ -37,7 +37,7 @@ onValue(ref(database, 'users/'), (snapshot) => {
     renderList(snapshot);
 })
 
-async function renderList(usersList) {
+function renderList(usersList) {
     const list = document.getElementById("users-list");
 
     const listItems = list.querySelectorAll(".user-item");
