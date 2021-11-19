@@ -12,53 +12,14 @@ initializeAppCheck(app, {
     isTokenAutoRefreshEnabled: false
 });
 
-window.addEventListener('DOMContentLoaded', async () => {
-    setMinMaxBirthdate();
-})
-
 const database = getDatabase(app);
 const storage = getStorage(app);
 const form = document.getElementById("user-form");
 const updateBtn = document.getElementById("update-btn");
 
-updateBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const userID = form.getAttribute("userID");
-    const formData = new FormData(form);
-    const userData = {}
-
-    for (let [key, value] of formData.entries()) {
-        userData[key] = value
-    }
-    update(ref(database, `users/${ userID }`), userData);
-});
-
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const newUserId = push(child(ref(database), 'users')).key;
-    const formData = new FormData(form);
-    const userData = {}
-
-    for (let [key, value] of formData.entries()) {
-        userData[key] = value
-    }
-
-    const userPic = formData.get("userPic");
-    if (userPic) {
-        const userPicRef = storageRef(storage, `userPics/${ newUserId }/` + userPic.name);
-        userData['userPic'] = userPicRef.fullPath;
-        uploadBytes(userPicRef, userPic);
-    }
-    
-    console.log(userData);
-    writeUserData(newUserId, userData);
-});
-
-function writeUserData(userID, obj) {
-    set(ref(database, 'users/' + userID), obj)
-        .then(() => (alert('Data transfered succssfully')))
-        .catch((err) => (alert('Something went wrong!')));
-}
+window.addEventListener('DOMContentLoaded', async () => {
+    setMinMaxBirthdate();
+})
 
 function setMinMaxBirthdate() {
     const today = new Date();
@@ -71,6 +32,10 @@ function setMinMaxBirthdate() {
     birthdateInput.setAttribute("max", `${currentYear}-${month}-${day}`);
     birthdateInput.setAttribute("min", `${currentYear-120}-${month}-${day}`);
 }
+
+onValue(ref(database, 'users/'), (snapshot) => {
+    showUsersList(snapshot);
+})
 
 async function showUsersList(snapshot) {
     const usersList = snapshot;
@@ -113,6 +78,47 @@ async function showUsersList(snapshot) {
     })
 }
 
+updateBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const userID = form.getAttribute("userID");
+    const formData = new FormData(form);
+    const userData = {}
+
+    for (let [key, value] of formData.entries()) {
+        userData[key] = value
+    }
+    update(ref(database, `users/${ userID }`), userData);
+});
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newUserId = push(child(ref(database), 'users')).key;
+    const formData = new FormData(form);
+    const userData = {}
+
+    for (let [key, value] of formData.entries()) {
+        userData[key] = value
+    }
+
+    const userPic = formData.get("userPic");
+    if (userPic) {
+        const userPicRef = storageRef(storage, `userPics/${ newUserId }/` + userPic.name);
+        userData['userPic'] = userPicRef.fullPath;
+        uploadBytes(userPicRef, userPic);
+    }
+    
+    console.log(userData);
+    writeUserData(newUserId, userData);
+});
+
+function writeUserData(userID, obj) {
+    set(ref(database, 'users/' + userID), obj)
+        .then(() => (alert('Data transfered succssfully')))
+        .catch((err) => (alert('Something went wrong!')));
+}
+
+
+
 function deleteUser(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -128,9 +134,7 @@ function deleteUser(event) {
         })
 }
 
-onValue(ref(database, 'users/'), (snapshot) => {
-    showUsersList(snapshot);
-})
+
 
 function getUser(event) {
     const userID = event.target.id;
