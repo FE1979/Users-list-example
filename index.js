@@ -62,11 +62,20 @@ function renderList(usersList) {
         deleteBtn.id = item.key;
         deleteBtn.addEventListener('click', deleteUser)
 
-        listItem.textContent = `${userData.firstName}, 
-                                ${userData.lastName}, 
-                                ${userData.birthDate}, 
-                                ${userData.email},
-                                ${userData.phoneNumber}`;
+        const spans = new Map;
+        Object.entries(userData).forEach( ([key, value]) => {
+            let span = document.createElement("span");
+            span.setAttribute("name", key);
+            span.textContent = value;
+            spans.set(key, span);
+        })
+
+        listItem.appendChild(spans.get('firstName')); listItem.appendChild(document.createTextNode(", "))
+        listItem.appendChild(spans.get('lastName')); listItem.appendChild(document.createTextNode(", "))
+        listItem.appendChild(spans.get('birthDate')); listItem.appendChild(document.createTextNode(", "))
+        listItem.appendChild(spans.get('email')); listItem.appendChild(document.createTextNode(", "))
+        listItem.appendChild(spans.get('phoneNumber'));
+
         listItem.id = item.key;
         listItem.className = "user-item"
 
