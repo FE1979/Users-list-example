@@ -37,22 +37,21 @@ onValue(ref(database, 'users/'), (snapshot) => {
     renderList(snapshot);
 })
 
-async function renderList(snapshot) {
-    const usersList = snapshot;
+async function renderList(usersList) {
     const list = document.getElementById("users-list");
 
-    let listItems = document.querySelectorAll(".user-item");
+    const listItems = list.querySelectorAll(".user-item");
     listItems.forEach((item) => {
         list.removeChild(item);
     })
 
     usersList.forEach((item) => {
-        let userData = item.exportVal();
-        let listItem = document.createElement("li");
-        let deleteBtn = document.createElement('button');
+        const userData = item.exportVal();
+        const listItem = document.createElement("li");
+        const deleteBtn = document.createElement('button');
 
         if (userData['userPic']) {
-            let userPic = document.createElement('img');
+            const userPic = document.createElement('img');
             const userPicRef = storageRef(storage, userData['userPic']);
             getDownloadURL(userPicRef)
                 .then((url) => userPic.src = url)
