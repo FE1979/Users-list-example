@@ -87,37 +87,26 @@ function writeUserData(userID, obj) {
         .catch((err) => (alert('Something went wrong!')));
 }
 
-function createUser(e) {
+async function createUser(e) {
     e.preventDefault();
     const newUserId = push(child(ref(database), 'users')).key;
-    const formData = new FormData(form);
-    const userData = {}
+    const userData = getFormData();
+    const userPic = userData['userPic']
 
-    for (let [key, value] of formData.entries()) {
-        userData[key] = value
-    }
-
-    const userPic = formData.get("userPic");
     if (userPic) {
         const userPicRef = storageRef(storage, `userPics/${ newUserId }/` + userPic.name);
         userData['userPic'] = userPicRef.fullPath;
-        uploadBytes(userPicRef, userPic);
+        await uploadBytes(userPicRef, userPic);
     }
     
-    console.log(userData);
     writeUserData(newUserId, userData);
 }
 
 function updateUser(e) {
     e.preventDefault();
     const userID = form.getAttribute("userID");
-    const formData = new FormData(form);
-    const userData = {}
-
-    for (let [key, value] of formData.entries()) {
-        userData[key] = value
-    }
-    update(ref(database, `users/${ userID }`), userData);
+    
+    update(ref(database, `users/${ userID }`), getFormData());
 }
 
 function deleteUser(event) {
@@ -135,7 +124,16 @@ function deleteUser(event) {
         })
 }
 
+function getFormData() {
+    const formData = new FormData(form);
+    const userData = {}
 
+    for (let [key, value] of formData.entries()) {
+        userData[key] = value
+    }
+
+    return userData;
+}
 
 function getUser(event) {
     const userID = event.target.id;
