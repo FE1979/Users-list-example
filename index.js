@@ -114,6 +114,8 @@ async function showUsersList(snapshot) {
 }
 
 function deleteUser(event) {
+    event.preventDefault();
+    event.stopPropagation();
     const userID = event.target.id;
     const userPicRef = storageRef(storage, `userPics/${ userID }`);
     set(ref(database, 'users/' + userID), null);
