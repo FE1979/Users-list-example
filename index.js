@@ -34,10 +34,10 @@ function setMinMaxBirthdate() {
 }
 
 onValue(ref(database, 'users/'), (snapshot) => {
-    showUsersList(snapshot);
+    renderList(snapshot);
 })
 
-async function showUsersList(snapshot) {
+async function renderList(snapshot) {
     const usersList = snapshot;
     const list = document.getElementById("users-list");
 
