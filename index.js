@@ -68,20 +68,12 @@ function renderList() {
         deleteBtn.id = userID;
         deleteBtn.addEventListener('click', deleteUser)
 
-        const spans = new Map;
-        Object.entries(userData).forEach( ([key, value]) => {
-            let span = document.createElement("span");
-            span.setAttribute("name", key);
-            span.textContent = value;
-            spans.set(key, span);
-        })
-
-        listItem.appendChild(spans.get('firstName')); listItem.appendChild(document.createTextNode(", "))
-        listItem.appendChild(spans.get('lastName')); listItem.appendChild(document.createTextNode(", "))
-        listItem.appendChild(spans.get('birthDate')); listItem.appendChild(document.createTextNode(", "))
-        listItem.appendChild(spans.get('email')); listItem.appendChild(document.createTextNode(", "))
-        listItem.appendChild(spans.get('phoneNumber'));
-
+        listItem.textContent = `${userData.firstName},
+                                ${userData.lastName},
+                                ${userData.birthDate},
+                                ${userData.email},
+                                ${userData.phoneNumber}`;
+       
         listItem.id = userID;
         listItem.className = "user-item"
 
@@ -148,25 +140,11 @@ function getFormData() {
 
 function getListItemData(event) {
     const userID = event.target.id;
-    form.setAttribute("userID", userID);
-    const clickedElem = event.target;
-    let spans;
-
-    if (clickedElem.className == "user-item") {
-        spans = clickedElem.querySelectorAll("span");
-    } else {
-        spans = clickedElem.parentNode.querySelectorAll("span")
-    }
-
-    const itemData = {};
-    spans.forEach((span) => {
-        itemData[span.getAttribute("name")] = span.textContent;
-        console.log(span.getAttribute("name"));
-        console.log(span.textContent)
-    })
-
+    const itemData = users.get(userID);
+    console.log(userID)
     const inputs = form.querySelectorAll('input');
 
+    form.setAttribute("userID", userID);
     inputs.forEach((input) => {
         let key = input.getAttribute("name");
         input.value = itemData[key]
