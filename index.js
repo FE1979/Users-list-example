@@ -16,6 +16,7 @@ const database = getDatabase(app);
 const storage = getStorage(app);
 const form = document.getElementById("user-form");
 const updateBtn = document.getElementById("update-btn");
+let users = new Map();
 
 window.addEventListener('DOMContentLoaded', () => {
     setMinMaxBirthdate();
@@ -34,19 +35,24 @@ function setMinMaxBirthdate() {
 }
 
 onValue(ref(database, 'users/'), (snapshot) => {
-    renderList(snapshot);
+    users.clear();
+    snapshot.forEach((user) => {
+        const userData = user.exportVal();
+        users.set(user.key, userData)
+    })
+    renderList();
 })
 
-function renderList(usersList) {
-    const list = document.getElementById("users-list");
+function renderList() {
+    const usersList = new Map(users);
 
+    const list = document.getElementById("users-list");
     const listItems = list.querySelectorAll(".user-item");
     listItems.forEach((item) => {
         list.removeChild(item);
     })
 
-    usersList.forEach((item) => {
-        const userData = item.exportVal();
+    usersList.forEach((userData, userID) => {
         const listItem = document.createElement("li");
         const deleteBtn = document.createElement('button');
 
@@ -59,7 +65,7 @@ function renderList(usersList) {
         }
 
         deleteBtn.textContent = 'Delete';
-        deleteBtn.id = item.key;
+        deleteBtn.id = userID;
         deleteBtn.addEventListener('click', deleteUser)
 
         const spans = new Map;
@@ -76,7 +82,7 @@ function renderList(usersList) {
         listItem.appendChild(spans.get('email')); listItem.appendChild(document.createTextNode(", "))
         listItem.appendChild(spans.get('phoneNumber'));
 
-        listItem.id = item.key;
+        listItem.id = userID;
         listItem.className = "user-item"
 
         listItem.addEventListener('click', getListItemData)
