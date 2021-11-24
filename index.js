@@ -2,7 +2,7 @@ self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 
 import { initializeApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
-import { getDatabase, onValue, ref, set, get, update, push, child } from 'firebase/database';
+import { getDatabase, onValue, ref, set, update, push, child } from 'firebase/database';
 import { getStorage, uploadBytes, getDownloadURL, deleteObject, listAll, ref as storageRef } from 'firebase/storage';
 import { firebaseConfig,DEBUG_TOKEN } from './firebase_config.js';
 
