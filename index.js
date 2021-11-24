@@ -45,9 +45,9 @@ onValue(ref(database, 'users/'), (snapshot) => {
 
 function renderList() {
     const usersList = new Map(users);
-
     const list = document.getElementById("users-list");
     const listItems = list.querySelectorAll(".user-item");
+
     listItems.forEach((item) => {
         list.removeChild(item);
     })
@@ -141,7 +141,6 @@ function getFormData() {
 function getListItemData(event) {
     const userID = event.target.id;
     const itemData = users.get(userID);
-    console.log(userID)
     const inputs = form.querySelectorAll('input');
 
     form.setAttribute("userID", userID);
