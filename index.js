@@ -53,7 +53,15 @@ function renderList() {
     })
 
     usersList.forEach((userData, userID) => {
-        const listItem = document.createElement("li");
+        const listItem = document.createElement("tr");
+        const userPicCell = document.createElement('td');
+        const firstNameCell = document.createElement('td');
+        const lastNameCell = document.createElement('td');
+        const birthDateCell = document.createElement('td');
+        const emailCell = document.createElement('td');
+        const phoneCell = document.createElement('td');
+        const delBtnCell = document.createElement('td');
+        const list = document.querySelector("table#users-list > tbody"); //.table > tbody:nth-child(2) 
         const deleteBtn = document.createElement('button');
 
         if (userData['userPic']) {
@@ -61,25 +69,32 @@ function renderList() {
             const userPicRef = storageRef(storage, userData['userPic']);
             getDownloadURL(userPicRef)
                 .then((url) => userPic.src = url)
-                .then(() => { listItem.appendChild(userPic) });
+                .then(() => { userPicCell.appendChild(userPic) });
         }
+
+        listItem.id = userID;
+        listItem.className = "user-item";
+        listItem.addEventListener('click', getListItemData)
 
         deleteBtn.textContent = 'Delete';
         deleteBtn.id = userID;
-        deleteBtn.addEventListener('click', deleteUser)
+        deleteBtn.addEventListener('click', deleteUser);
+        delBtnCell.appendChild(deleteBtn);
 
-        listItem.textContent = `${userData.firstName},
-                                ${userData.lastName},
-                                ${userData.birthDate},
-                                ${userData.email},
-                                ${userData.phoneNumber}`;
-       
-        listItem.id = userID;
-        listItem.className = "user-item"
+        firstNameCell.textContent = `${userData.firstName}`;
+        lastNameCell.textContent = `${userData.lastName}`;
+        birthDateCell.textContent = `${userData.birthDate}`;
+        emailCell.textContent = `${userData.email}`;
+        phoneCell.textContent = `${userData.phoneNumber}`;
 
-        listItem.addEventListener('click', getListItemData)
+        listItem.appendChild(userPicCell);
+        listItem.appendChild(firstNameCell);
+        listItem.appendChild(lastNameCell);
+        listItem.appendChild(birthDateCell);
+        listItem.appendChild(emailCell);
+        listItem.appendChild(phoneCell);
+        listItem.appendChild(delBtnCell);
 
-        listItem.appendChild(deleteBtn);
         list.appendChild(listItem);
     })
 }
