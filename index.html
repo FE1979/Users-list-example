@@ -19,15 +19,15 @@
             </div>
         </div>
         <div class="col-xl-4" id="user-form-wrapper">
-            <form id="user-form" action="" method="POST" enctype="multipart/form-data">
+            <form class="was-validated" id="user-form" action="" method="POST" enctype="multipart/form-data">
                 <fieldset>
                     <legend>Add or update user info</legend>
                     <p>Required fields are followed with <abbr title="required">*</abbr></p>
                     <div class="row">
-                        <div class="col">
+                        <div class="col needs-validation">
                             <label class="form-label" for="user-first-name"><small>Name</small><abbr title="required" aria-label="required">*</abbr> :
                                 <input class="form-control" type="text" id="user-first-name" name="firstName" placeholder="First name" required
-                                        maxlength="255">
+                                    maxlength="255">
                             </label>
                         </div>
                         <div class="col">
