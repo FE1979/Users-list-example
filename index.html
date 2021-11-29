@@ -9,8 +9,8 @@
 </head>
 <body>
     <h1>Users List Example</h1>
-    <section>
-        <div id="users-list-wrapper">
+    <div class="row">
+        <div class="col-xl-8" id="users-list-wrapper">
             <div id="users-filter">
 
             </div>
@@ -18,39 +18,39 @@
                                 
             </div>
         </div>
-    </section>
-    <section>
-        <form id="user-form" action="" method="POST" enctype="multipart/form-data">
-            <fieldset>
-                <legend>Add or update user info</legend>
-                <p>Required fields are followed with <abbr title="required">*</abbr></p>
-                <label for="user-first-name">First Name<abbr title="required" aria-label="required">*</abbr> :
-                    <input type="text" id="user-first-name" name="firstName" placeholder="First name" required
-                            maxlength="255">
-                </label>
-                <label for="user-last-name">Last Name<abbr title="required" aria-label="required">*</abbr> : 
-                    <input type="text" id="user-last-name" name="lastName" placeholder="Last name" required
-                            maxlength="255">
-                </label>
-                <label for="user-email">E-mail<abbr title="required" aria-label="required">*</abbr> : 
-                    <input type="email" id="user-email" name="email" placeholder="example@gmail.com" required
-                            maxlength="255">
-                </label>
-                <label for="user-phone">Phone number<abbr title="required" aria-label="required">*</abbr> : 
-                    <input type="tel" id="user-phone" name="phoneNumber" placeholder="+38-0XX-XXX-XXXX" required 
-                            pattern="^\+38-0\d{2}-\d{3}-\d{4}">
-                </label>
-                <label for="user-birthdate">Birthdate<abbr title="required" aria-label="required">*</abbr> : 
-                    <input type="date" id="user-birthdate" name="birthDate" placeholder="DD.MM.YYYY" required>
-                </label>
-                <label for="user-pic">Upload user picture
-                    <input type="file" id="user-pic" name="userPic" accept="image/*">
-                </label>
-                <input type="submit" value="Add">
-                <input type="button" id="update-btn" value="Update">
-            </fieldset>
-        </form>
-    </section>
+        <div class="col-xl-4" id="user-form-wrapper">
+            <form id="user-form" action="" method="POST" enctype="multipart/form-data">
+                <fieldset>
+                    <legend>Add or update user info</legend>
+                    <p>Required fields are followed with <abbr title="required">*</abbr></p>
+                    <label for="user-first-name">First Name<abbr title="required" aria-label="required">*</abbr> :
+                        <input type="text" id="user-first-name" name="firstName" placeholder="First name" required
+                                maxlength="255">
+                    </label>
+                    <label for="user-last-name">Last Name<abbr title="required" aria-label="required">*</abbr> : 
+                        <input type="text" id="user-last-name" name="lastName" placeholder="Last name" required
+                                maxlength="255">
+                    </label>
+                    <label for="user-email">E-mail<abbr title="required" aria-label="required">*</abbr> : 
+                        <input type="email" id="user-email" name="email" placeholder="example@gmail.com" required
+                                maxlength="255">
+                    </label>
+                    <label for="user-phone">Phone number<abbr title="required" aria-label="required">*</abbr> : 
+                        <input type="tel" id="user-phone" name="phoneNumber" placeholder="+38-0XX-XXX-XXXX" required 
+                                pattern="^\+38-0\d{2}-\d{3}-\d{4}">
+                    </label>
+                    <label for="user-birthdate">Birthdate<abbr title="required" aria-label="required">*</abbr> : 
+                        <input type="date" id="user-birthdate" name="birthDate" placeholder="DD.MM.YYYY" required>
+                    </label>
+                    <label for="user-pic">Upload user picture
+                        <input type="file" id="user-pic" name="userPic" accept="image/*">
+                    </label>
+                    <input type="submit" value="Add">
+                    <input type="button" id="update-btn" value="Update">
+                </fieldset>
+            </form>
+        </div>
+    </div>
 </body>
 <script src="./dist/bundle.js"></script>
 </html>
