@@ -78,6 +78,7 @@ function renderList() {
 
         deleteBtn.textContent = 'Delete';
         deleteBtn.id = userID;
+        deleteBtn.className = "btn btn-sm btn-outline-danger";
         deleteBtn.addEventListener('click', deleteUser);
         delBtnCell.appendChild(deleteBtn);
 
