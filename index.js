@@ -156,7 +156,9 @@ function getFormData() {
 }
 
 function getListItemData(event) {
-    const userID = event.target.id;
+    const clickedElement = event.target;
+    const userID = clickedElement.id ? clickedElement.id : clickedElement.parentNode.id;
+
     const itemData = users.get(userID);
     const inputs = form.querySelectorAll('input');
 
