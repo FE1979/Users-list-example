@@ -66,6 +66,7 @@ function renderList() {
 
         if (userData['userPic']) {
             const userPic = document.createElement('img');
+            userPic.setAttribute('width', '100%');
             const userPicRef = storageRef(storage, userData['userPic']);
             getDownloadURL(userPicRef)
                 .then((url) => userPic.src = url)
