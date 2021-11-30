@@ -45,7 +45,7 @@ onValue(ref(database, 'users/'), (snapshot) => {
 
 function renderList() {
     const usersList = new Map(users);
-    const list = document.getElementById("users-list");
+    const list = document.querySelector("table#users-list > tbody");
     const listItems = list.querySelectorAll(".user-item");
 
     listItems.forEach((item) => {
@@ -61,7 +61,6 @@ function renderList() {
         const emailCell = document.createElement('td');
         const phoneCell = document.createElement('td');
         const delBtnCell = document.createElement('td');
-        const list = document.querySelector("table#users-list > tbody"); //.table > tbody:nth-child(2) 
         const deleteBtn = document.createElement('button');
 
         if (userData['userPic']) {
@@ -108,7 +107,9 @@ async function createUser(e) {
     e.preventDefault();
     const newUserId = push(child(ref(database), 'users')).key;
     const userData = getFormData();
-    const userPic = userData['userPic']
+    const userPic = userData['userPic'];
+
+    console.log('run create user')
 
     if (userPic) {
         const userPicRef = storageRef(storage, `userPics/${ newUserId }/` + userPic.name);
